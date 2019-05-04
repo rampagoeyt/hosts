@@ -1,0 +1,28 @@
+#201905031345
+#ipset flush directlist
+#ipset create directlist hash:ip
+#iptables -t nat -A PREROUTING -m set --match-set directlist dst -j RETURN
+#iptables -t nat -A OUTPUT -m set --match-set directlist dst -j RETURN
+#ipset add directlist 203.208.32.0/19
+ipset flush proxylist
+ipset create proxylist hash:ip
+iptables -t nat -I PREROUTING -p tcp -m set --match-set proxylist dst -j REDIRECT --to-port 1080
+iptables -t nat -D PREROUTING -p udp -m set --match-set proxylist dst -j REDIRECT --to-port 1080
+iptables -t nat -I OUTPUT -p tcp -m set --match-set proxylist dst -j REDIRECT --to-port 1080
+iptables -t nat -I OUTPUT -p udp -m set --match-set proxylist dst -j REDIRECT --to-port 1080
+#iptables -t nat -I PREROUTING -p tcp -m set --match-set proxylist dst -m multiport --dport 1:442,444:65532 -j REDIRECT --to-port 1080
+#iptables -t nat -I PREROUTING -p udp -m set --match-set proxylist dst -m multiport --dport 1:442,444:65532 -j REDIRECT --to-port 1080
+#iptables -t nat -I OUTPUT -p tcp -m set --match-set proxylist dst -m multiport --dport 1:442,444:65532 -j REDIRECT --to-port 1080
+#iptables -t nat -I OUTPUT -p udp -m set --match-set proxylist dst -m multiport --dport 1:442,444:65532 -j REDIRECT --to-port 1080
+#iptables -t nat -I PREROUTING -p tcp -m set --match-set proxylist dst --dport 443 -j DNAT --to 127.0.0.1
+#iptables -t nat -I PREROUTING -p udp -m set --match-set proxylist dst --dport 443 -j DNAT --to 127.0.0.1
+#iptables -t nat -I OUTPUT -p tcp -m set --match-set proxylist dst --dport 443 -j DNAT --to 127.0.0.1
+#iptables -t nat -I OUTPUT -p udp -m set --match-set proxylist dst --dport 443 -j DNAT --to 127.0.0.1
+ipset add proxylist 91.108.4.0/22
+ipset add proxylist 91.108.8.0/21
+ipset add proxylist 91.108.16.0/21
+ipset add proxylist 91.108.36.0/23
+ipset add proxylist 91.108.38.0/23
+ipset add proxylist 91.108.56.0/22
+ipset add proxylist 149.154.160.0/20
+ipset add proxylist 185.38.13.0/24
